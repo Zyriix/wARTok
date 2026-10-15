@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.env
+.venv/
+.DS_Store
+*.local.*
+/outputs
+/cache
+/data
+/release
+wandb/
+*.ckpt
+*.pt
+*.pth
+*.npz
+*.pb
+*.log

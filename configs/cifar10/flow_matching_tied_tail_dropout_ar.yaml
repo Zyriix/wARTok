@@ -1,0 +1,198 @@
+wandb_project: wAR
+wandb_name: flow_matching_tied_tail_dropout_ar
+data_dir: ./data/cifar10
+xflip: true
+crop_type: center
+image_size: 32
+num_channels: 3
+num_classes: 11
+patch_size: 4
+use_label: false
+patch_dim: 48
+x_len: 64
+diffusion_decoder: false
+train_ae: false
+train_ar: true
+phases: 200000:DO_PRIOR_AR:1
+batch_size: 512
+eval_batch_size: 512
+lr_enc: 0.00015
+lr_dec: 0.00015
+lr_ar: 0.00015
+lr_gan_loss: 0.00015
+weight_decay_enc: 0.0
+weight_decay_dec: 0.0
+weight_decay_ar: 0.0001
+weight_decay_gan: 0.0001
+lr_enc_min: 3.0e-05
+lr_dec_min: 3.0e-05
+lr_ar_min: 3.0e-05
+lr_gan_loss_min: 3.0e-05
+use_tf32: false
+lr_scheduler: none
+drop: 0.0
+ar_drop: 0.1
+grad_clip: 0.0
+seed: 42
+beta1: 0.5
+beta2: 0.95
+ar_beta1: 0.9
+ar_beta2: 0.99
+label_drop_prob: 0.1
+precision: bf16-mixed
+replace_cur_with_ema: false
+num_workers: 4
+devices: 8
+reverse_t: true
+use_noise_query: true
+use_tail_dropout: true
+l2_v_target: true
+tail_dropout_t2k: 1.0
+tied_timestep: true
+time_stages: 200,400,600,800,1000
+k_per_stage: 192,184,72,48,16
+load_ar_model: false
+load_ar_model_ema: false
+prior_G_loss: false
+use_l1_loss: false
+use_l2_loss: false
+use_lpips_loss: false
+use_gan_loss: false
+use_prior_loss: false
+teacher_forcing_ae: false
+disc_adaptive_weight: false
+lpips_weight: 0.1
+gan_G_weight: 0.1
+prior_enc_weight: 1.0
+l1_weight: 0.1
+l2_weight: 1.0
+gan_start: 5000
+prior_start: 0
+tail_dropout_start: 0
+tail_dropout_p: 1.0
+torch_compile: true
+compile_ae: true
+compile_ar: true
+compile_gan: false
+ar_ema_halflife: 2000
+ae_ema_halflife: 0
+ema_sampling: true
+ema_reconstruction: false
+cache_kv: true
+topK: 0.0
+topP: 0.0
+cfg: 0.0
+cfg_schedule: cosine
+cfg_power: 2.75
+temperature: 1.0
+eval_data_dir: ./data/cifar10
+eval_crop_type: center
+eval_fid_ref_path: ./refs/cifar10-32x32_local.npz
+save_dir: ./outputs/flow_matching_tied_tail_dropout_ar
+log_freq: 25
+visualize_freq: 5000
+visualize_img_num: 8
+ckpt_freq: 25000
+eval_freq: 25000
+save_ckpt: true
+ar_ckpt_path: ''
+ae_ckpt_path: ./outputs/flow_matching_tied_tail_dropout_tokenizer/000/ckpts/last.ckpt
+resume_optimizer: false
+cond_emb_dim: 32
+greedy_coding_prob: 0.0
+z_len: 64
+z_dim: 512
+vq_type: VQ
+codebook_size: 1024
+norm_layer: RMSNorm
+ffn_type: geglu
+context_type: cross_attn
+hidden_dim: 512
+Encoder:
+  input_dim: 48
+  output_dim: 512
+  cond_dim: 32
+  cond_input_dim: 11
+  max_seq_len: 64
+  ctx_max_seq_len: 64
+  dim: 512
+  layer_num: 10
+  mlp_ratio: 4.0
+  heads: 8
+  emb_dropout: 0.0
+  drop: 0.0
+  l2_norm: false
+  context_type: cross_attn
+  rope: false
+  abs_pos: true
+  causal: false
+  norm_layer: RMSNorm
+  ffn_type: geglu
+Quantizer:
+  codebook_size: 1024
+  z_dim: 12
+  dim: 512
+  length: 64
+  cond_dim: 32
+  cond_affine_norm: false
+  vq_beta: 0.25
+  use_norm: true
+  norm_layer: l2
+  ffn_type: geglu
+  temperature: 1.0
+Decoder:
+  input_dim: 48
+  ctx_input_dim: 512
+  output_dim: 48
+  cond_dim: 32
+  cond_input_dim: 11
+  max_seq_len: 64
+  ctx_max_seq_len: 64
+  dim: 512
+  layer_num: 10
+  heads: 8
+  emb_dropout: 0.0
+  drop: 0.0
+  l2_norm: false
+  context_type: cross_attn
+  rope: false
+  abs_pos: true
+  causal: false
+  norm_layer: RMSNorm
+  ffn_type: geglu
+  mlp_ratio: 4.0
+  zero_out: true
+  query_type: noise
+ARModel:
+  input_dim: 512
+  output_dim: 1024
+  max_seq_len: 64
+  cond_dim: 32
+  cond_input_dim: 11
+  dim: 512
+  layer_num: 13
+  heads: 8
+  emb_dropout: 0.0
+  drop: 0.1
+  l2_norm: false
+  context_type: none
+  rope: false
+  abs_pos: true
+  causal: true
+  out_act: false
+  norm_layer: RMSNorm
+  ffn_type: geglu
+  mlp_ratio: 4.0
+  zero_out: false
+  temperature: 1.0
+GANLoss:
+  disc_loss: vanilla
+  disc_dim: 64
+  disc_type: patchgan
+  image_size: 32
+  disc_num_layers: 3
+  disc_in_channels: 3
+  gen_adv_loss: vanilla
+  lecam_loss_weight: 0.001
+  norm_type: bn
+  aug_prob: 1.0
